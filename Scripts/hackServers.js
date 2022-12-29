@@ -10,24 +10,17 @@ export async function main(ns) {
 		if (ns.getServerRequiredHackingLevel(target[i]) <= ns.getHackingLevel() && ns.getServerNumPortsRequired(target[i]) <= playerPortsAccess) {
 			// if ports to hack is eq/higher than 1, run brutessh.
 			if (ns.getServerNumPortsRequired(target[i]) >= 1 && ns.getServerNumPortsRequired(target[i]) <= playerPortsAccess) {
-				ns.tprint("Opening SSH Port on machine: " + target[i] + ".");
 				ns.brutessh(target[i]);
-				ns.tprint("Opening SSH Port on machine: " + target[i] + " done.");
-				ns.nuke(target[i]);
-				if (!ns.hasRootAccess(target[i])) {
-					ns.nuke(target[i]);
-				}
 				await ns.sleep(1000);
 			}
 			// if ports to hack is eq/higher than 2, run ftpcrack.
 			if (ns.getServerNumPortsRequired(target[i]) >= 2 && ns.getServerNumPortsRequired(target[i]) <= playerPortsAccess) {
-				ns.tprint("Opening FTP Port on machine: " + target[i]);
 				ns.ftpcrack(target[i]);
-				ns.tprint("Opened FTP port on machine: " + target[i] + ".");
-				if (!ns.hasRootAccess(target[i])) {
-					ns.nuke(target[i]);
-				}
 				await ns.sleep(1000);
+			}
+
+			if (!ns.hasRootAccess(target[i])) {
+				ns.nuke(target[i]);
 			}
 			// if server has root access, calculate how much threads the script can use, rm the old script, deploy new script and run it with max threads.
 			if (ns.hasRootAccess(target[i])) {
